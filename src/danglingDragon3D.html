@@ -20,6 +20,8 @@
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
+			var resolution = new THREE.Vector2( window.innerWidth, window.innerHeight );
+
 
 			camera.position.z = 30;
 			var curve = new THREE.SplineCurve( [
@@ -53,7 +55,21 @@
 			}
 			var line = new MeshLine();
 			line.setGeometry( geometry3d );
-			var material = new MeshLineMaterial(new THREE.Color(0xff0000));
+			var material = new MeshLineMaterial( {
+				map: THREE.ImageUtils.loadTexture( 'assets/stroke.png' ),
+				useMap: false,
+				color: new THREE.Color( 0x9bc1bc ),
+				opacity: .5,
+				resolution: resolution,
+				sizeAttenuation: false,
+				lineWidth: 10,
+				near: camera.near,
+				far: camera.far,
+				depthWrite: false,
+				depthTest: false,
+				transparent: true
+			});
+			new MeshLineMaterial(new THREE.Color(0xff0000));
 			var mesh = new THREE.Mesh( line.geometry, material ); // this syntax could definitely be improved!
 			scene.add( mesh );
 
