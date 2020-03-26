@@ -9,11 +9,14 @@
 		</style>
 	</head>
 	<body>
+					<button id="exportASCII">export ASCII</button> <button id="exportBinary">export binary</button>
+
 		<script src="js/three.js"></script>
 		<script src="js/THREE.MeshLine.js"></script>
-		<script src="js/THREE.STLExporter.js"></script>
+		<script src="js/STLExporter.js"></script>
 		<script src="js/FileSaver.js"></script>
 		<script>
+
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
@@ -56,7 +59,7 @@
 			var line = new MeshLine();
 			line.setGeometry( geometry3d );
 			var material = new MeshLineMaterial( {
-				map: THREE.ImageUtils.loadTexture( 'assets/stroke.png' ),
+				map: THREE.ImageUtils.loadTexture( '../assets/stroke.png' ),
 				useMap: false,
 				color: new THREE.Color( 0x9bc1bc ),
 				opacity: .5,
@@ -86,10 +89,17 @@
 			.then(text => console.log(text))
 		}
 
-		var exporter = new THREE.STLExporter();
-		var str = exporter.parse( scene ); // Export the scene
-		var blob = new Blob( [str], { type : 'text/plain' } ); // Generate Blob from the string
-		saveAs( blob, 'file.stl' ); //Save the Blob to file.stl
+		exporter = new THREE.STLExporter();
+		var buttonExportBinary = document.getElementById( 'exportBinary' );
+				buttonExportBinary.addEventListener( 'click', exportBinary );
+
+		function exportBinary() {
+
+				var result = exporter.parse( scene);
+				var blob = new Blob( [result]);
+				saveAs(blob, 'box.stl')
+
+			}
 		</script>
 	</body>
 </html>
